@@ -1,8 +1,8 @@
 namespace AdventOfCode {
 
-    class Day1 {
+    class Day1 : IDay {
 
-        public static int solve1() {
+        public string solve1() {
             var lines = File.ReadLines("./inputs/day1.txt");
             var sum = 0;
             foreach (var line in lines) {
@@ -19,10 +19,10 @@ namespace AdventOfCode {
                 var result = $"{first}{last}";
                 sum += int.Parse(result);
             }
-            return sum;
+            return sum.ToString();
         }
 
-        public static int solve2() {
+        public string solve2() {
             var lines = File.ReadLines("./inputs/day1.txt");
             var sum = 0;
             foreach (var line in lines) {
@@ -38,6 +38,7 @@ namespace AdventOfCode {
                     if (char.IsDigit(lineChar)) {
                         digit = lineChar;
                     } else {
+                        // greedy; will not work for something like "ninine"
                         foreach (var kvp in wordToCurrentMatch) {
                             var currentMatchLength = kvp.Value.Length;
                             var expectedChar = kvp.Key[currentMatchLength];
@@ -65,7 +66,7 @@ namespace AdventOfCode {
                 var result = $"{first}{last}";
                 sum += int.Parse(result);
             }
-            return sum;
+            return sum.ToString();
         }
 
         private static readonly Dictionary<string, char> wordToDigit = new()
