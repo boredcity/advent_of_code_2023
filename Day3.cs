@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace AdventOfCode {
 
     class Day3 : IDay {

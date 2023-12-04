@@ -2,7 +2,7 @@
 namespace Main {
     class Program {
         static void Main() {
-            IDay[] days = { new Day1(), new Day2(), new Day3() };
+            IDay[] days = { new Day1(), new Day2(), new Day3(), new Day4() };
             Console.WriteLine($"Results:");
             foreach (var day in days) {
                 var first = day.solve1();
