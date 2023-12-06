@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Numerics;
 
 namespace AdventOfCode {
@@ -46,63 +47,45 @@ namespace AdventOfCode {
             return minResult?.ToString() ?? "No solution";
         }
 
+        record Range(BigInteger from, BigInteger to);
+        record ConverterRange(BigInteger from, BigInteger to, BigInteger shift);
+
         public string solve2() {
-            // var lines = File.ReadLines("./inputs/day5.txt");
-            // List<List<BigInteger>> ranges = new();
-            // List<List<List<BigInteger>>> converters = new() {};
+            var lines = File.ReadLines("./inputs/day5.txt");
+            List<Range> ranges = new();
+            List<List<ConverterRange>> converters = new() {};
 
-            // foreach (var line in lines) {
-            //     if (line.StartsWith("seeds")) {
-            //         var allSeedNumbers = line.Split(": ")[1].Split(' ').Select(s => BigInteger.Parse(s)).ToList();
-            //         for (var i = 0; i < allSeedNumbers.Count; i += 2) {
-            //             List<BigInteger> pair = new() {allSeedNumbers[0], allSeedNumbers[0] + allSeedNumbers[1]};
-            //             ranges.Add(pair);
-            //         }
-            //     } else {
-            //         if (line.Length < 1) {
-            //             continue;
-            //         } else if (char.IsLetter(line[0])) {
-            //             converters.Add(new List<List<BigInteger>>());
-            //         } else {
-            //             converters[converters.Count - 1].Add(line.Split(' ').Select(s => BigInteger.Parse(s)).ToList());
-            //         }
-            //     }
-            // }
+            foreach (var line in lines) {
+                if (line.StartsWith("seeds")) {
+                    var allSeedNumbers = line.Split(": ")[1].Split(' ').Select(s => BigInteger.Parse(s)).ToList();
+                    for (var i = 0; i < allSeedNumbers.Count; i += 2) {
+                        var pair = new Range(allSeedNumbers[0], allSeedNumbers[0] + allSeedNumbers[1]);
+                        ranges.Add(pair);
+                    }
+                } else {
+                    if (line.Length < 1) {
+                        continue;
+                    } else if (char.IsLetter(line[0])) {
+                        converters.Add(new List<ConverterRange>());
+                    } else {
+                        var parts = line.Split(' ').Select(s => BigInteger.Parse(s)).ToList();
+                        converters[converters.Count - 1]?.Add(new ConverterRange(parts[1], parts[1] + parts[2], parts[0]));
+                    }
+                }
+            }
 
-            // foreach (var converter in converters) {
-            //     List<List<BigInteger>> temp = new() {};
-            //     List<List<BigInteger>> used = new() {};
-            //     foreach (var prevStepRange in ranges) {
-            //         foreach (var converterOption in converter) {
-            //             var destRangeStart = converterOption[0];
-            //             var sourceRangeStart = converterOption[1];
-            //             var rangeLen = converterOption[2];
-            //             var shift = destRangeStart - sourceRangeStart;
-            //             var sourceRangeEnd = sourceRangeStart + rangeLen;
-            //             var prevStart = prevStepRange[0];
-            //             var prevEnd = prevStepRange[1];
-            //             List<BigInteger> usedRange = new() { BigInteger.Max(prevStart, sourceRangeStart), BigInteger.Min(prevEnd, sourceRangeEnd)};
-            //             if (usedRange[0] < usedRange[1]) {
-            //                 List<BigInteger> resultingRange = new() {
-            //                     usedRange[0] + shift,
-            //                     usedRange[1] + shift
-            //                 };
-            //                 temp.Add(resultingRange);
-            //                 used.Add(usedRange);
-            //             }
-            //         }
+            foreach(var r in ranges) {
 
-            //         // add 1=1 mapping
-                    
-            //         Console.WriteLine($"temp.Count {temp.Count}");
-            //     }
-            //     ranges = temp;
-            // }
+                foreach(var conv in converters) {
+                    foreach(var convInternal in conv) {
+                        if (r.from >= convInternal.from || r.to <= convInternal.to) {
+                            Console.WriteLine(convInternal.shift);
 
-            // ranges.ForEach(r => Console.WriteLine(r[0]));
-
-            // return ranges.Aggregate(ranges[0][0], (acc, r) => r[0] < acc ? r[0] : acc).ToString() ?? "No solution";
-            return "WiP";
+                        }
+                    }
+                }
+            }
+            return "";
         }
     }
 }
