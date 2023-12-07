@@ -26,10 +26,10 @@ namespace AdventOfCode {
             foreach (var seed in seeds) {
                 var currentValue = seed;
                 foreach (var converter in converters) {
-                    foreach (var converterOption in converter) {
-                        var destRangeStart = converterOption[0];
-                        var sourceRangeStart = converterOption[1];
-                        var rangeLen = converterOption[2];
+                    foreach (var condition in converter) {
+                        var destRangeStart = condition[0];
+                        var sourceRangeStart = condition[1];
+                        var rangeLen = condition[2];
                         var shift = destRangeStart - sourceRangeStart;
                         var sourceRangeEnd = sourceRangeStart + rangeLen;
                         if (currentValue >= sourceRangeStart && currentValue < sourceRangeEnd) {
@@ -46,63 +46,82 @@ namespace AdventOfCode {
             return minResult?.ToString() ?? "No solution";
         }
 
+        record RangeWithShift(BigInteger from, BigInteger to, BigInteger shift);
+
         public string solve2() {
-            // var lines = File.ReadLines("./inputs/day5.txt");
-            // List<List<BigInteger>> ranges = new();
-            // List<List<List<BigInteger>>> converters = new() {};
+            var lines = File.ReadLines("./inputs/day5.txt");
+            List<RangeWithShift> ranges = new();
+            List<List<RangeWithShift>> converters = new() {};
 
-            // foreach (var line in lines) {
-            //     if (line.StartsWith("seeds")) {
-            //         var allSeedNumbers = line.Split(": ")[1].Split(' ').Select(s => BigInteger.Parse(s)).ToList();
-            //         for (var i = 0; i < allSeedNumbers.Count; i += 2) {
-            //             List<BigInteger> pair = new() {allSeedNumbers[0], allSeedNumbers[0] + allSeedNumbers[1]};
-            //             ranges.Add(pair);
-            //         }
-            //     } else {
-            //         if (line.Length < 1) {
-            //             continue;
-            //         } else if (char.IsLetter(line[0])) {
-            //             converters.Add(new List<List<BigInteger>>());
-            //         } else {
-            //             converters[converters.Count - 1].Add(line.Split(' ').Select(s => BigInteger.Parse(s)).ToList());
-            //         }
-            //     }
-            // }
+            foreach (var line in lines) {
+                if (line.StartsWith("seeds")) {
+                    var allSeedNumbers = line.Split(": ")[1].Split(' ').Select(s => BigInteger.Parse(s)).ToList();
+                    for (var i = 0; i < allSeedNumbers.Count; i += 2) {
+                        ranges.Add(new RangeWithShift(allSeedNumbers[i], allSeedNumbers[i] + allSeedNumbers[i+1], 0));
+                    }
+                } else {
+                    if (line.Length < 1) {
+                        continue;
+                    } else if (char.IsLetter(line[0])) {
+                        converters.Add(new List<RangeWithShift>());
+                    } else {
+                        var parts = line.Split(' ').Select(s => BigInteger.Parse(s)).ToList();
+                        var destinationStart = parts[0];
+                        var sourceStart = parts[1];
+                        var rangeLength = parts[2];
+                        converters[converters.Count - 1].Add(new RangeWithShift(sourceStart, sourceStart + rangeLength, destinationStart - sourceStart));
+                    }
+                }
+            }
 
-            // foreach (var converter in converters) {
-            //     List<List<BigInteger>> temp = new() {};
-            //     List<List<BigInteger>> used = new() {};
-            //     foreach (var prevStepRange in ranges) {
-            //         foreach (var converterOption in converter) {
-            //             var destRangeStart = converterOption[0];
-            //             var sourceRangeStart = converterOption[1];
-            //             var rangeLen = converterOption[2];
-            //             var shift = destRangeStart - sourceRangeStart;
-            //             var sourceRangeEnd = sourceRangeStart + rangeLen;
-            //             var prevStart = prevStepRange[0];
-            //             var prevEnd = prevStepRange[1];
-            //             List<BigInteger> usedRange = new() { BigInteger.Max(prevStart, sourceRangeStart), BigInteger.Min(prevEnd, sourceRangeEnd)};
-            //             if (usedRange[0] < usedRange[1]) {
-            //                 List<BigInteger> resultingRange = new() {
-            //                     usedRange[0] + shift,
-            //                     usedRange[1] + shift
-            //                 };
-            //                 temp.Add(resultingRange);
-            //                 used.Add(usedRange);
-            //             }
-            //         }
+            foreach (var converter in converters) {
+                foreach (var condition in converter) {
+                    List<RangeWithShift> newRanges = new() {};
+                    foreach (var curRange in ranges) {
+                        var hasIntersection = (
+                            curRange.from <= condition.from && condition.from < curRange.to
+                        ) || (
+                            curRange.from < condition.to && condition.to <= curRange.to
+                        ) || (
+                            condition.from <= curRange.from && curRange.to <= condition.to
+                        );
+                        if (!hasIntersection) {
+                            newRanges.Add(curRange);
+                            continue;
+                        }
+                        var intersectionStart = BigInteger.Max(curRange.from, condition.from);
+                        var intersectionEnd = BigInteger.Min(curRange.to, condition.to);
 
-            //         // add 1=1 mapping
-                    
-            //         Console.WriteLine($"temp.Count {temp.Count}");
-            //     }
-            //     ranges = temp;
-            // }
+                        if (curRange.from < intersectionStart) {
+                            var beforeIntersectionRange = new RangeWithShift(
+                                curRange.from,
+                                intersectionStart,
+                                0
+                            );
+                            newRanges.Add(beforeIntersectionRange);
+                        }
 
-            // ranges.ForEach(r => Console.WriteLine(r[0]));
+                        var shiftedIntersectionRange = new RangeWithShift(
+                            intersectionStart,
+                            intersectionEnd,
+                            condition.shift
+                        );
+                        newRanges.Add(shiftedIntersectionRange);
+                        if (curRange.to > intersectionEnd) {
+                            var afterIntersectionRange = new RangeWithShift(
+                                intersectionEnd,
+                                curRange.to,
+                                0
+                            );
+                            newRanges.Add(afterIntersectionRange);
+                        }
+                    }
+                    ranges = newRanges;
+                }
+                ranges = ranges.Select(r => new RangeWithShift(r.from + r.shift, r.to + r.shift, 0)).ToList();
+            }
 
-            // return ranges.Aggregate(ranges[0][0], (acc, r) => r[0] < acc ? r[0] : acc).ToString() ?? "No solution";
-            return "WiP";
+            return ranges.Aggregate(new BigInteger(-1), (acc, r) => (acc == -1 || r.from < acc) ? r.from : acc).ToString();
         }
     }
 }
