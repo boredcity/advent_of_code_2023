@@ -13,7 +13,7 @@ namespace AdventOfCode {
             });
         }
 
-        record Hand(string cards, int multiplier, int combinationWorth);
+        sealed record Hand(string cards, int multiplier, int combinationWorth);
         public string solve1() {
             var lines = File.ReadLines("./inputs/day7.txt");
             

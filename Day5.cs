@@ -2,10 +2,13 @@ using System.Numerics;
 
 namespace AdventOfCode {
     class Day5 : IDay {
+
+        sealed record RangeWithShift(BigInteger from, BigInteger to, BigInteger shift);
+
         public string solve1() {
             var lines = File.ReadLines("./inputs/day5.txt");
             List<BigInteger> seeds = new();
-            List<List<List<BigInteger>>> converters = new() {};
+            List<List<RangeWithShift>> converters = new() {};
 
             foreach (var line in lines) {
                 if (line.StartsWith("seeds")) {
@@ -14,9 +17,13 @@ namespace AdventOfCode {
                     if (line.Length < 1) {
                         continue;
                     } else if (char.IsLetter(line[0])) {
-                        converters.Add(new List<List<BigInteger>>());
+                        converters.Add(new List<RangeWithShift>());
                     } else {
-                        converters[converters.Count - 1].Add(line.Split(' ').Select(s => BigInteger.Parse(s)).ToList());
+                        var parts = line.Split(' ').Select(s => BigInteger.Parse(s)).ToList();
+                        var destinationStart = parts[0];
+                        var sourceStart = parts[1];
+                        var rangeLength = parts[2];
+                        converters[converters.Count - 1].Add(new RangeWithShift(sourceStart, sourceStart + rangeLength, destinationStart - sourceStart));
                     }
                 }
             }
@@ -27,13 +34,8 @@ namespace AdventOfCode {
                 var currentValue = seed;
                 foreach (var converter in converters) {
                     foreach (var condition in converter) {
-                        var destRangeStart = condition[0];
-                        var sourceRangeStart = condition[1];
-                        var rangeLen = condition[2];
-                        var shift = destRangeStart - sourceRangeStart;
-                        var sourceRangeEnd = sourceRangeStart + rangeLen;
-                        if (currentValue >= sourceRangeStart && currentValue < sourceRangeEnd) {
-                            currentValue += shift;
+                        if (currentValue >= condition.from && currentValue < condition.to) {
+                            currentValue += condition.shift;
                             break;
                         }
                     }
@@ -45,8 +47,6 @@ namespace AdventOfCode {
 
             return minResult?.ToString() ?? "No solution";
         }
-
-        record RangeWithShift(BigInteger from, BigInteger to, BigInteger shift);
 
         public string solve2() {
             var lines = File.ReadLines("./inputs/day5.txt");

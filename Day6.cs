@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace AdventOfCode {
     class Day6 : IDay {
-        private record Race<T>(T time, T bestDistance);
+        sealed private record Race<T>(T time, T bestDistance);
 
         public string solve1() {
             var lines = File.ReadLines("./inputs/day6.txt");
