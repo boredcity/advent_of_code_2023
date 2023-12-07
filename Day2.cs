@@ -2,7 +2,7 @@ namespace AdventOfCode {
 
     class Day2 : IDay {
 
-        private Dictionary<string, int> maxCount = new() {
+        readonly private Dictionary<string, int> maxCount = new() {
             { "red", 12 },
             { "green", 13 },
             { "blue", 14 },
@@ -44,7 +44,6 @@ namespace AdventOfCode {
             var sumOfPowers = 0;
             foreach (var line in lines) {
                 var titleAndBody = line.Split(": ");
-                var id = int.Parse(titleAndBody[0].Split(' ')[1]);
                 var rounds = titleAndBody[1].Split("; ");
                 Dictionary<string, int> seenCubeCount = new() {
                     { "red", 0 },

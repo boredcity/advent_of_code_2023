@@ -51,8 +51,8 @@ namespace AdventOfCode {
                 var comboWorthDiff = h1.combinationWorth - h2.combinationWorth;
                 if (comboWorthDiff != 0) return comboWorthDiff;
                 for (var i = 0; i < h1.cards.Length; i++) {
-                    var worth1 = this.charToWorth[h1.cards[i]];
-                    var worth2 = this.charToWorth[h2.cards[i]];
+                    var worth1 = charToWorth[h1.cards[i]];
+                    var worth2 = charToWorth[h2.cards[i]];
                     if (worth1 != worth2) return worth1 - worth2;
                 }
                 return 0;
@@ -105,8 +105,8 @@ namespace AdventOfCode {
                 var comboWorthDiff = h1.combinationWorth - h2.combinationWorth;
                 if (comboWorthDiff != 0) return comboWorthDiff;
                 for (var i = 0; i < h1.cards.Length; i++) {
-                    var worth1 = h1.cards[i] == 'J' ? 0 : this.charToWorth[h1.cards[i]];
-                    var worth2 = h2.cards[i] == 'J' ? 0 : this.charToWorth[h2.cards[i]];
+                    var worth1 = h1.cards[i] == 'J' ? 0 : charToWorth[h1.cards[i]];
+                    var worth2 = h2.cards[i] == 'J' ? 0 : charToWorth[h2.cards[i]];
                     if (worth1 != worth2) return worth1 - worth2;
                 }
                 return 0;

@@ -1,6 +1,7 @@
 ﻿using AdventOfCode;
+
 namespace Main {
-    class Program {
+    static class Program {
         static void Main() {
             IDay[] days = {
                 new Day1(),
@@ -12,11 +13,8 @@ namespace Main {
                 new Day7(),
             };
             Console.WriteLine($"Results:");
-            foreach (var day in days) {
-                var first = day.solve1();
-                var second = day.solve2();
-                Console.WriteLine($"${day}: {first} / {second}");
-            }
+            var i = 0;
+            foreach (var day in days) Console.WriteLine($"Day {++i}: {day.solve1()} and { day.solve2()}");
         }
     }
 }

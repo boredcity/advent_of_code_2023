@@ -31,7 +31,7 @@ namespace AdventOfCode {
                 var winningNumbers = numberLists[0].Split(' ', StringSplitOptions.RemoveEmptyEntries).ToHashSet();
                 var ticketNumbers = numberLists[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 var copyIndex = lineIndex;
-                foreach (var copy in ticketNumbers.Where(n => winningNumbers.Contains(n))) {
+                foreach (var copy in ticketNumbers.Where(winningNumbers.Contains)) {
                     copyIndex += 1;
                     if (copyIndex >= copiesPerTicket.Count) copiesPerTicket.Add(0);
                     copiesPerTicket[copyIndex] += copiesPerTicket[lineIndex];
