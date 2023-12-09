@@ -58,7 +58,7 @@ namespace AdventOfCode {
                 }
                 stepsToZ.Add(stepsTaken);
             }
-            return stepsToZ.Select(x => (decimal) x).Aggregate(LCM).ToString();
+            return stepsToZ.ConvertAll(x => (decimal) x).Aggregate(LCM).ToString();
         }
 
         private static decimal LCM(decimal a, decimal b) => a * b / GCD(a, b);
