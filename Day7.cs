@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace AdventOfCode {
     class Day7 : IDay {
         private readonly Dictionary<char, int> charToWorth;
