@@ -49,18 +49,20 @@ namespace AdventOfCode {
                     var neighborRI = shiftRI + cur.rI;
                     var neighborCI = shiftCI + cur.cI;
                     if (!IsInBounds(rows, neighborRI, neighborCI)) continue;
-                    var neighbor = new CellWithPath(
-                        rows[neighborRI][neighborCI],
-                        neighborRI,
-                        neighborCI,
-                        new List<CellWithPath>(cur.path) { cur }
-                    );
-                    var hasReversePath = Array.Exists(charToShifts[neighbor.content], neighborShift => neighborShift == (-shiftRI, -shiftCI));
-                    if (!hasReversePath) continue;
-                    if (!visited.Contains(neighbor.GetId())) {
+                    var content = rows[neighborRI][neighborCI];
+                    var pathToNeighbor = new List<CellWithPath>(cur.path) { cur };
+                    if (!visited.Contains(Cell.GetIdFromCoordinates(neighborRI, neighborCI))) {
+                        var neighbor = new CellWithPath(
+                            content,
+                            neighborRI,
+                            neighborCI,
+                            pathToNeighbor
+                        );
+                        var neighborHasInvertedShift = Array.Exists(charToShifts[neighbor.content], neighborShift => neighborShift == (-shiftRI, -shiftCI));
+                        if (!neighborHasInvertedShift) continue;
                         planned.Push(neighbor);
-                    } else if (neighbor.content == 'S' && cur.path.Count > 2) { // already seen; does it close the loop?
-                        loop = neighbor.path;
+                    } else if (content == 'S' && cur.path.Count > 2) { // already seen; does it close the loop?
+                        loop = pathToNeighbor;
                         break;
                     }
                 }
@@ -73,11 +75,7 @@ namespace AdventOfCode {
             return ((GetLoop(rows).Count + 1) / 2).ToString();
         }
 
-
-        public string Solve2() {
-            var rows = File.ReadLines("./inputs/day10.txt").ToList();
-            var loop = GetLoop(rows);
-
+        private char getStartContent(List<CellWithPath> loop) {
             string directions = "";
             var (rIFirstShift, cIFirstShift) = (loop[1].rI - loop[0].rI, loop[1].cI - loop[0].cI);
             var (rILastShift, cILastShift) = (loop.Last().rI - loop[0].rI, loop.Last().cI - loop[0].cI);
@@ -87,48 +85,38 @@ namespace AdventOfCode {
             if (rIFirstShift == 1 || rILastShift == 1) directions += 'B';
             if (rIFirstShift == -1 || rILastShift == -1) directions += 'T';
 
-            char startContent;
             switch (directions) {
-                case "RL": startContent = '-'; break;
-                case "RB": startContent = 'F'; break;
-                case "RT": startContent = 'L'; break;
-                case "LB": startContent = '7'; break;
-                case "LT": startContent = 'J'; break;
-                default: startContent = '|'; break;
+                case "RL": return '-';
+                case "RB": return 'F';
+                case "RT": return 'L';
+                case "LB": return '7';
+                case "LT": return 'J';
+                default: return '|';
             }
+        }
 
-            var loopSet = loop.Aggregate(new HashSet<string>(), (acc, cell) => {
-                acc.Add(cell.GetId());
-                return acc;
-            });
-            var cleanRows = rows.Select((row, rI) => row.Select(
-                (ch, cI) => {
-                    var id = Cell.GetIdFromCoordinates(rI, cI);
-                    if (loopSet.Contains(id)) {
-                        return id == loop[0].GetId() ? startContent : ch;
-                    } else {
-                        return ' ';
-                    }
-                }).ToList()).ToList();
+        public string Solve2() {
+            var rows = File.ReadLines("./inputs/day10.txt").ToList();
+            var loop = GetLoop(rows);
+            var loopSet = new HashSet<string>();
+            loop.ForEach(cell => loopSet.Add(cell.GetId()));
 
-            var count = 0;
-            for (var rI = 0; rI < cleanRows.Count; rI++) {
+            var insideLoopCount = 0;
+            for (var rI = 0; rI < rows.Count; rI++) {
                 var isInsideTheLoop = false;
                 char? lastUnpaired = null;
-                for (var cI = 0; cI < cleanRows[rI].Count; cI++) {
-                    var cellValue = cleanRows[rI][cI];
-                    if (cellValue == ' ') {
-                        if (isInsideTheLoop) {
-                            count++;
-                            cleanRows[rI][cI] = 'I';
-                        }
-                    } else if (cellValue == '|') {
+                for (var cI = 0; cI < rows[rI].Length; cI++) {
+                    var cellContent = rows[rI][cI];
+                    if (cellContent == 'S') cellContent = getStartContent(loop);
+                    if (!loopSet.Contains(Cell.GetIdFromCoordinates(rI, cI))) {
+                        if (isInsideTheLoop) insideLoopCount++;
+                    } else if (cellContent == '|') {
                         isInsideTheLoop = !isInsideTheLoop;
-                    } else if (cellValue == 'L' || cellValue == 'F') {
-                        lastUnpaired = cellValue;
+                    } else if (cellContent == 'L' || cellContent == 'F') {
+                        lastUnpaired = cellContent;
                     } else if (
-                        (lastUnpaired == 'L' && cellValue == '7') ||
-                        (lastUnpaired == 'F' && cellValue == 'J')
+                        (lastUnpaired == 'L' && cellContent == '7') ||
+                        (lastUnpaired == 'F' && cellContent == 'J')
                     ) {
                         lastUnpaired = null;
                         isInsideTheLoop = !isInsideTheLoop;
@@ -136,7 +124,7 @@ namespace AdventOfCode {
                 }
             }
 
-            return count.ToString();
+            return insideLoopCount.ToString();
         }
     }
 }
