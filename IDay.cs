@@ -1,6 +1,6 @@
 namespace AdventOfCode {
     public interface IDay {
-        string solve1();
-        string solve2();
+        string Solve1();
+        string Solve2();
     }
 }

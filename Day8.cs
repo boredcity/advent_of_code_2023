@@ -1,7 +1,7 @@
 namespace AdventOfCode {
     class Day8 : IDay {
         record MapNode(string name, string left, string right);
-        public string solve1() {
+        public string Solve1() {
             var lines = File.ReadLines("./inputs/day8.txt");
             var i = -1;
             string instructions = "";
@@ -30,7 +30,7 @@ namespace AdventOfCode {
             return stepsTaken.ToString();
         }
 
-        public string solve2() {
+        public string Solve2() {
             var lines = File.ReadLines("./inputs/day8.txt");
             var i = -1;
             string instructions = "";

@@ -1,7 +1,7 @@
 namespace AdventOfCode {
 
     class Day3 : IDay {
-        public string solve1() {
+        public string Solve1() {
             var lines = File.ReadLines("./inputs/day3.txt").Append(null);
             var sum = 0;
             string?[] currentLines = { null, null, null };
@@ -63,7 +63,7 @@ namespace AdventOfCode {
         }
 
 
-        public string solve2() {
+        public string Solve2() {
             var lines = File.ReadLines("./inputs/day3.txt").Append(null);
             var lineIndex = -1;
             string?[] currentLines = { null, null, null };

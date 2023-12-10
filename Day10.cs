@@ -68,13 +68,13 @@ namespace AdventOfCode {
             return loop;
         }
 
-        public string solve1() {
+        public string Solve1() {
             var rows = File.ReadLines("./inputs/day10.txt").ToList();
             return ((GetLoop(rows).Count + 1) / 2).ToString();
         }
 
 
-        public string solve2() {
+        public string Solve2() {
             var rows = File.ReadLines("./inputs/day10.txt").ToList();
             var loop = GetLoop(rows);
 

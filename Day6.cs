@@ -4,7 +4,7 @@ namespace AdventOfCode {
     class Day6 : IDay {
         sealed private record Race<T>(T time, T bestDistance);
 
-        public string solve1() {
+        public string Solve1() {
             var lines = File.ReadLines("./inputs/day6.txt");
             
             List<Race<int>> races = new() {};
@@ -39,7 +39,7 @@ namespace AdventOfCode {
             return result.ToString();
         }
 
-        public string solve2() {
+        public string Solve2() {
             var lines = File.ReadLines("./inputs/day6.txt");
             
             List<BigInteger> parts = new() {};

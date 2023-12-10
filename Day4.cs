@@ -1,6 +1,6 @@
 namespace AdventOfCode {
     class Day4 : IDay {
-        public string solve1() {
+        public string Solve1() {
             var lines = File.ReadLines("./inputs/day4.txt");
             var sum = 0;
 
@@ -18,7 +18,7 @@ namespace AdventOfCode {
 
             return sum.ToString();
         }
-        public string solve2() {
+        public string Solve2() {
             var lines = File.ReadLines("./inputs/day4.txt");
             List<int> copiesPerTicket = new() {};
             var lineIndex = -1;

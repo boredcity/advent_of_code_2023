@@ -5,7 +5,7 @@ namespace AdventOfCode {
 
         sealed record RangeWithShift(BigInteger from, BigInteger to, BigInteger shift);
 
-        public string solve1() {
+        public string Solve1() {
             var lines = File.ReadLines("./inputs/day5.txt");
             List<BigInteger> seeds = new();
             List<List<RangeWithShift>> converters = new() {};
@@ -48,7 +48,7 @@ namespace AdventOfCode {
             return minResult?.ToString() ?? "No solution";
         }
 
-        public string solve2() {
+        public string Solve2() {
             var lines = File.ReadLines("./inputs/day5.txt");
             List<RangeWithShift> ranges = new();
             List<List<RangeWithShift>> converters = new() {};

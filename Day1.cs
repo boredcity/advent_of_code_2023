@@ -2,7 +2,7 @@ namespace AdventOfCode {
 
     class Day1 : IDay {
 
-        public string solve1() {
+        public string Solve1() {
             var lines = File.ReadLines("./inputs/day1.txt");
             var sum = 0;
             foreach (var line in lines) {
@@ -22,7 +22,7 @@ namespace AdventOfCode {
             return sum.ToString();
         }
 
-        public string solve2() {
+        public string Solve2() {
             var lines = File.ReadLines("./inputs/day1.txt");
             var sum = 0;
             foreach (var line in lines) {
