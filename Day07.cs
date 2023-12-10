@@ -1,9 +1,9 @@
 namespace AdventOfCode {
-    class Day7 : IDay {
+    class Day07 : IDay {
         private readonly Dictionary<char, int> charToWorth;
         private static char[] cardsWorthOrder = { 'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2' };
 
-        public Day7() {
+        public Day07() {
             charToWorth = cardsWorthOrder.Select((ch, i) => (ch, i)).Aggregate(new Dictionary<char, int>(), (dict, info) => {
                 var (ch, i) = info;
                 dict[ch] = cardsWorthOrder.Length - i;
@@ -13,7 +13,7 @@ namespace AdventOfCode {
 
         sealed record Hand(string cards, int multiplier, int combinationWorth);
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day7.txt");
+            var lines = File.ReadLines("./inputs/day07.txt");
             
             List<Hand> hands = new() {};
             foreach (var line in lines) {
@@ -59,7 +59,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day7.txt");
+            var lines = File.ReadLines("./inputs/day07.txt");
             List<Hand> hands = new() {};
             foreach (var line in lines) {
                 var parts = line.Split(' ');

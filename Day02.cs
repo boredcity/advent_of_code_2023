@@ -1,6 +1,6 @@
 namespace AdventOfCode {
 
-    class Day2 : IDay {
+    class Day02 : IDay {
 
         readonly private Dictionary<string, int> maxCount = new() {
             { "red", 12 },
@@ -9,7 +9,7 @@ namespace AdventOfCode {
         };
 
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day2.txt");
+            var lines = File.ReadLines("./inputs/day02.txt");
             var sum = 0;
             foreach (var line in lines) {
                 var titleAndBody = line.Split(": ");
@@ -40,7 +40,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day2.txt");
+            var lines = File.ReadLines("./inputs/day02.txt");
             var sumOfPowers = 0;
             foreach (var line in lines) {
                 var titleAndBody = line.Split(": ");

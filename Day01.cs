@@ -1,9 +1,9 @@
 namespace AdventOfCode {
 
-    class Day1 : IDay {
+    class Day01 : IDay {
 
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day1.txt");
+            var lines = File.ReadLines("./inputs/day01.txt");
             var sum = 0;
             foreach (var line in lines) {
                 char? first = null;
@@ -23,7 +23,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day1.txt");
+            var lines = File.ReadLines("./inputs/day01.txt");
             var sum = 0;
             foreach (var line in lines) {
                 char? first = null;

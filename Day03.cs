@@ -1,8 +1,8 @@
 namespace AdventOfCode {
 
-    class Day3 : IDay {
+    class Day03 : IDay {
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day3.txt").Append(null);
+            var lines = File.ReadLines("./inputs/day03.txt").Append(null);
             var sum = 0;
             string?[] currentLines = { null, null, null };
 
@@ -64,7 +64,7 @@ namespace AdventOfCode {
 
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day3.txt").Append(null);
+            var lines = File.ReadLines("./inputs/day03.txt").Append(null);
             var lineIndex = -1;
             string?[] currentLines = { null, null, null };
             Dictionary<string, int> potentialGears = new() { };

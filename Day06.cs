@@ -1,11 +1,11 @@
 using System.Numerics;
 
 namespace AdventOfCode {
-    class Day6 : IDay {
+    class Day06 : IDay {
         sealed private record Race<T>(T time, T bestDistance);
 
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day6.txt");
+            var lines = File.ReadLines("./inputs/day06.txt");
             
             List<Race<int>> races = new() {};
             List<int> times = new() {};
@@ -40,7 +40,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day6.txt");
+            var lines = File.ReadLines("./inputs/day06.txt");
             
             List<BigInteger> parts = new() {};
             foreach (var line in lines) {

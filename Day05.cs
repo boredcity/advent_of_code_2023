@@ -1,12 +1,12 @@
 using System.Numerics;
 
 namespace AdventOfCode {
-    class Day5 : IDay {
+    class Day05 : IDay {
 
         sealed record RangeWithShift(BigInteger from, BigInteger to, BigInteger shift);
 
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day5.txt");
+            var lines = File.ReadLines("./inputs/day05.txt");
             List<BigInteger> seeds = new();
             List<List<RangeWithShift>> converters = new() {};
 
@@ -49,7 +49,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day5.txt");
+            var lines = File.ReadLines("./inputs/day05.txt");
             List<RangeWithShift> ranges = new();
             List<List<RangeWithShift>> converters = new() {};
 

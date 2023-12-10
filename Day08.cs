@@ -1,8 +1,8 @@
 namespace AdventOfCode {
-    class Day8 : IDay {
+    class Day08 : IDay {
         record MapNode(string name, string left, string right);
         public string Solve1() {
-            var lines = File.ReadLines("./inputs/day8.txt");
+            var lines = File.ReadLines("./inputs/day08.txt");
             var i = -1;
             string instructions = "";
             Dictionary<string, MapNode> map = new() { };
@@ -31,7 +31,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var lines = File.ReadLines("./inputs/day8.txt");
+            var lines = File.ReadLines("./inputs/day08.txt");
             var i = -1;
             string instructions = "";
             Dictionary<string, MapNode> map = new() { };
