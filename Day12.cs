@@ -31,13 +31,14 @@ namespace AdventOfCode {
             int availableIntervalsIndex,
             Dictionary<string, decimal> memo
         ) {
-            if (rangesToFitIndex >= rangesToFit.Count) return 1;
+            if (rangesToFitIndex >= rangesToFit.Count) return availableIntervals.Skip(availableIntervalsIndex).Any(i =>i.Contains('#')) ? 0 : 1;
             if (availableIntervalsIndex >= availableIntervals.Length) return 0;
             var intervalToUse = availableIntervals[availableIntervalsIndex];
+            var rangeToSubtract = rangesToFit[rangesToFitIndex];
+
             var memoKey = $"{rangesToFitIndex}/{availableIntervalsIndex}/{intervalToUse}";
             if (memo.ContainsKey(memoKey)) return memo[memoKey];
 
-            var rangeToSubtract = rangesToFit[rangesToFitIndex];
             var resultOfSkippingInterval = GetPossiblePlacementsCount(rangesToFit, availableIntervals, rangesToFitIndex, availableIntervalsIndex + 1, memo);
             var maxWaysToFitCount = intervalToUse.Length - rangeToSubtract + 1;
             var resultsOfUsingInterval = 0m;
@@ -48,13 +49,13 @@ namespace AdventOfCode {
                     (offset > 0 && intervalToUse[offset - 1] == '#') ||
                     (dividerIndex < intervalToUse.Length && intervalToUse[dividerIndex] == '#')
                 ) continue; // cannot start right after or end right before "#"
+
                 if (nextRange > intervalToUse.Length - dividerIndex - 1) {
                     resultsOfUsingInterval += GetPossiblePlacementsCount(rangesToFit, availableIntervals, rangesToFitIndex + 1, availableIntervalsIndex + 1, memo);
                 } else {
                     var intervalsAfterRangeFit = (string[])availableIntervals.Clone();
                     var updatedInterval = intervalsAfterRangeFit[availableIntervalsIndex].Substring(dividerIndex + 1);
                     intervalsAfterRangeFit[availableIntervalsIndex] = updatedInterval;
-                    // Console.WriteLine($"updatedInterval {intervalToUse} - {rangeToSubtract} - {offset} = {updatedInterval}");
                     resultsOfUsingInterval += GetPossiblePlacementsCount(rangesToFit, intervalsAfterRangeFit, rangesToFitIndex + 1, availableIntervalsIndex, memo);
                 }
             }
