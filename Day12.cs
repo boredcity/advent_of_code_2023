@@ -42,22 +42,16 @@ namespace AdventOfCode {
             var resultOfSkippingInterval = GetPossiblePlacementsCount(rangesToFit, availableIntervals, rangesToFitIndex, availableIntervalsIndex + 1, memo);
             var maxWaysToFitCount = intervalToUse.Length - rangeToSubtract + 1;
             var resultsOfUsingInterval = 0m;
-            var nextRange = (rangesToFitIndex + 1) >= rangesToFit.Count ? 0 : rangesToFit[rangesToFitIndex + 1];
             for (var offset = 0; offset < maxWaysToFitCount; offset++) {
                 var dividerIndex = rangeToSubtract + offset;
                 if (
                     (offset > 0 && intervalToUse[offset - 1] == '#') ||
                     (dividerIndex < intervalToUse.Length && intervalToUse[dividerIndex] == '#')
                 ) continue; // cannot start right after or end right before "#"
-
-                if (nextRange > intervalToUse.Length - dividerIndex - 1) {
-                    resultsOfUsingInterval += GetPossiblePlacementsCount(rangesToFit, availableIntervals, rangesToFitIndex + 1, availableIntervalsIndex + 1, memo);
-                } else {
-                    var intervalsAfterRangeFit = (string[])availableIntervals.Clone();
-                    var updatedInterval = intervalsAfterRangeFit[availableIntervalsIndex].Substring(dividerIndex + 1);
-                    intervalsAfterRangeFit[availableIntervalsIndex] = updatedInterval;
-                    resultsOfUsingInterval += GetPossiblePlacementsCount(rangesToFit, intervalsAfterRangeFit, rangesToFitIndex + 1, availableIntervalsIndex, memo);
-                }
+                var intervalsAfterRangeFit = (string[])availableIntervals.Clone();
+                var updatedInterval = intervalToUse.Length > dividerIndex + 1 ? intervalToUse.Substring(dividerIndex + 1) : "";
+                intervalsAfterRangeFit[availableIntervalsIndex] = updatedInterval;
+                resultsOfUsingInterval += GetPossiblePlacementsCount(rangesToFit, intervalsAfterRangeFit, rangesToFitIndex + 1, availableIntervalsIndex, memo);
             }
             memo[memoKey] = resultOfSkippingInterval + resultsOfUsingInterval;
             return resultOfSkippingInterval + resultsOfUsingInterval;
