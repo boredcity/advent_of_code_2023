@@ -14,7 +14,8 @@ namespace Main {
                 // new Day08(),
                 // new Day09(),
                 // new Day11(),
-                new Day12(),
+                // new Day12(),
+                new Day13(),
             };
             Console.WriteLine($"Results:");
             var i = 0;
