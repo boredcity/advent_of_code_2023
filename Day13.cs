@@ -26,14 +26,12 @@ namespace AdventOfCode {
                 var bottom = rI + 1;
                 var isReflection = true;
                 while (top >= 0 && bottom < lines.Length) {
-                    var (canBeReflectionInner, allowSmudgeInner) = CanBeReflection(lines[top], lines[bottom], allowSmudge);
+                    var (canBeReflectionInner, allowSmudgeInner) = CanBeReflection(lines[top--], lines[bottom++], allowSmudge);
                     allowSmudge = allowSmudgeInner;
                     if (!canBeReflectionInner) {
                         isReflection = false;
                         break;
                     }
-                    top--;
-                    bottom++;
                 }
                 reflectionLines += !isReflection || allowSmudge ? 0 : rI;
             }
@@ -60,8 +58,12 @@ namespace AdventOfCode {
             foreach (var line in lines.Append("")) {
                 if (line == "") {
                     var figure = currentSegmentLines.ToArray();
-                    rowsAbove += GetReflections(figure, allowSmudge);
-                    columnsToTheLeft += GetReflections(Rotate(figure), allowSmudge);
+                    var rowI = GetReflections(figure, allowSmudge);
+                    rowsAbove += rowI;
+                    if (rowI == 0) {
+                        var colI = GetReflections(Rotate(figure), allowSmudge);
+                        columnsToTheLeft += colI;
+                    }
                     currentSegmentLines = new List<string>();
                 } else currentSegmentLines.Add(line);
             }
