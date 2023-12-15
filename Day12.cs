@@ -19,7 +19,7 @@ namespace AdventOfCode {
                 var (scheme, brokenRanges) = ($"{parts[0]}?{parts[0]}?{parts[0]}?{parts[0]}?{parts[0]}", $"{parts[1]},{parts[1]},{parts[1]},{parts[1]},{parts[1]}".Split(',').Select(n => int.Parse(n)).ToList());
                 var availableIntervals = scheme.Split('.', StringSplitOptions.RemoveEmptyEntries);
                 var possibleWaysCount = GetPossiblePlacementsCount(brokenRanges, availableIntervals, 0, 0, new Dictionary<string, BigInteger>());
-                Console.WriteLine($"{++i}: {possibleWaysCount}");
+                // Console.WriteLine($"{++i}: {possibleWaysCount}");
                 return sum + possibleWaysCount;
             }).ToString();
         }
