@@ -13,7 +13,7 @@ namespace AdventOfCode {
         }
 
         public string Solve2() {
-            var i = 0;
+            // var i = 0;
             return File.ReadLines("./inputs/day12-test.txt").Aggregate(new BigInteger(0), (sum, line) => {
                 var parts = line.Split(' ');
                 var (scheme, brokenRanges) = ($"{parts[0]}?{parts[0]}?{parts[0]}?{parts[0]}?{parts[0]}", $"{parts[1]},{parts[1]},{parts[1]},{parts[1]},{parts[1]}".Split(',').Select(n => int.Parse(n)).ToList());
